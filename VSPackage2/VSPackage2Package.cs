@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
+using ControlFlowSearch.Analiser;
 using Microsoft.Win32;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
@@ -150,14 +151,20 @@ namespace Company.VSPackage2
             var solution = Package.GetGlobalService(typeof(SVsSolution)) as IVsSolution;
             string dir, path, user = "";
             solution.GetSolutionInfo(out dir, out path, out user);
+            ITextDocument textDocument = GetTextDocument(view.TextBuffer);
+            
+            var curetPosition = view.Caret;
+
+            var analizer = new Analizer();
+            analizer.TextParseTreeRoundtrip(path, textDocument.FilePath, curetPosition.Position.BufferPosition.Position);
             if ((null != view) && !view.Selection.IsEmpty)
             {
                 if (!view.Selection.IsEmpty)
                 {
 
-                    var curetPosition = view.Caret;
+                    //var curetPosition = view.Caret;
                     string selectedText = view.Selection.SelectedSpans[0].GetText();
-                    ITextDocument TextDocument = GetTextDocument(view.TextBuffer);
+                    
                     if (!String.IsNullOrWhiteSpace(selectedText))
                     {
                         IVsUIShell uiShell = (IVsUIShell) GetService(typeof (SVsUIShell));

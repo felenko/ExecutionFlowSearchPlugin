@@ -11,8 +11,11 @@ namespace ControlFlowSearch.Tests
         public void TestMethod1()
         {
             var analizer = new Analizer();
+
+            // CodeBlogPackage. private void ShowToolWindow(object sender, EventArgs e)
             analizer.TextParseTreeRoundtrip(
-                @"C:\Users\Kostiantyn\Documents\Visual Studio 2015\Projects\CodeBlog\CodeBlog.sln", "CodeBlog.cs", 34);
+                "C:\\Users\\Kostiantyn\\Documents\\Visual Studio 2015\\Projects\\CodeBlog\\CodeBlog.sln",
+                @"C:\Users\Kostiantyn\Documents\Visual Studio 2015\Projects\CodeBlog\CodeBlog\CodeBlogPackage.cs", 3214);
         }
     }
 }
