@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
 using ControlFlowSearch.Analiser;
+using EnvDTE;
+using EnvDTE80;
 using Microsoft.Win32;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
@@ -138,6 +140,43 @@ namespace Company.VSPackage2
             else
                 return null;
         }
+
+        internal static Project GetActiveProject()
+        {
+            DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
+            DTE2 dte80 = DteHelper.GetCurrent();
+            Project proj = GetActiveProject(dte80);
+            proj = GetActiveProject(dte);
+
+            return proj;
+        }
+
+        internal static Project GetActiveProject(DTE dte)
+        {
+
+            Project activeProject = null;
+
+            Array activeSolutionProjects = dte.ActiveSolutionProjects as Array;
+            if (activeSolutionProjects != null && activeSolutionProjects.Length > 0)
+            {
+                activeProject = activeSolutionProjects.GetValue(0) as Project;
+            }
+
+            return activeProject;
+        }
+        internal static Project GetActiveProject(DTE2 dte)
+        {
+           
+            Project activeProject = null;
+
+            Array activeSolutionProjects = dte.ActiveSolutionProjects as Array;
+            if (activeSolutionProjects != null && activeSolutionProjects.Length > 0)
+            {
+                activeProject = activeSolutionProjects.GetValue(0) as Project;
+            }
+
+            return activeProject;
+        }
         /// <summary>
         /// This function is the callback used to execute a command when the a menu item is clicked.
         /// See the Initialize method to see how the menu item is associated to this function using
@@ -156,7 +195,15 @@ namespace Company.VSPackage2
             var curetPosition = view.Caret;
 
             var analizer = new Analizer();
-            analizer.TextParseTreeRoundtrip(path, textDocument.FilePath, curetPosition.Position.BufferPosition.Position);
+            DTE2 dte = (DTE2)GetService(typeof(DTE2));
+
+            var project = GetActiveProject();///GetActiveProject(dte);
+
+            analizer.FindDeclarationAtPosition(path, "", textDocument.FilePath,
+                curetPosition.Position.BufferPosition.Position);
+             
+
+          //  EnvDTE.Solution solution = CodeRush.ApplicationObject.Solution;
             if ((null != view) && !view.Selection.IsEmpty)
             {
                 if (!view.Selection.IsEmpty)

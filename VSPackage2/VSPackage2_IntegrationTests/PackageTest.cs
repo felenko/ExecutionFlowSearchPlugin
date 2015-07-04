@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using ControlFlowSearch.Analiser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -40,8 +41,13 @@ namespace VSPackage2_IntegrationTests
         [HostType("VS IDE")]
         public void PackageLoadTest()
         {
+            var analizer = new Analizer();
+            // CodeBlogPackage. private void ShowToolWindow(object sender, EventArgs e)
+            analizer.FindDeclarationAtPosition("C:\\Users\\Kostiantyn\\Documents\\Visual Studio 2015\\Projects\\CodeBlog\\CodeBlog.sln", "",
+                @"C:\Users\Kostiantyn\Documents\Visual Studio 2015\Projects\CodeBlog\CodeBlog\CodeBlogPackage.cs", 3214);
             UIThreadInvoker.Invoke((ThreadInvoker)delegate ()
             {
+               
 
                 //Get the Shell Service
                 IVsShell shellService = VsIdeTestHostContext.ServiceProvider.GetService(typeof(SVsShell)) as IVsShell;

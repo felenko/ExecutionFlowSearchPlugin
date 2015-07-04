@@ -75,6 +75,10 @@
     <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ControlFlowSearch\ControlFlowSearch.csproj">
+      <Project>{F9D4921D-C58D-4C48-A4A5-17C622552AAC}</Project>
+      <Name>ControlFlowSearch</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VSPackage2.csproj">
       <Project>{BDBD9235-429F-447C-B3BE-FBE906AAC794}</Project>
       <Name>VSPackage2</Name>
